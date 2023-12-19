@@ -14,7 +14,9 @@ import lombok.NoArgsConstructor;
 public class GetAllCarResponse {
     private int id;
     private int brandId;
+    private String brandName;
     private int colorId;
+    private String colorName;
     private double dailyPrice;
     private int modelYear;
     private String description;

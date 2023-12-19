@@ -6,6 +6,7 @@ import com.etiya.rentacar.business.dtos.responses.brands.CreatedBrandResponse;
 import com.etiya.rentacar.business.dtos.responses.brands.GetAllBrandResponse;
 import com.etiya.rentacar.business.dtos.responses.cars.CreatedCarResponse;
 import com.etiya.rentacar.business.dtos.responses.cars.GetAllCarResponse;
+import com.etiya.rentacar.business.rules.cars.CarBusinessRules;
 import com.etiya.rentacar.core.utilities.mapping.ModelMapperService;
 import com.etiya.rentacar.dataaccess.abstracts.BrandRepository;
 import com.etiya.rentacar.dataaccess.abstracts.CarRepository;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class CarManager implements CarService {
     CarRepository carRepository;
     ModelMapperService modelMapperService;
+    CarBusinessRules carBusinessRules;
 
     @Override
     public List<GetAllCarResponse> getAll() {
@@ -36,6 +38,9 @@ public class CarManager implements CarService {
 
     @Override
     public CreatedCarResponse add(CreateCarRequest request) {
+
+        carBusinessRules.EachBrandCanContainMaxTenCars(request.getBrandId());
+
         Car car = modelMapperService.forRequest().map(request,Car.class);
 
         Car createdCar =  carRepository.save(car);
