@@ -1,5 +1,6 @@
 package com.etiya.rentacar.business.rules.rentals;
 
+import com.etiya.rentacar.core.utilities.exceptions.types.BusinessException;
 import com.etiya.rentacar.dataaccess.abstracts.CarRepository;
 import com.etiya.rentacar.dataaccess.abstracts.RentalRepository;
 import com.etiya.rentacar.entities.concretes.Car;
@@ -17,7 +18,7 @@ public class RentalBusinessRules {
         Optional<Car> car = carRepository.findById(carId);
 
         if (car.get().getState()!=1){
-            throw new RuntimeException("OnlyAvailableCarsCanBeRented");
+            throw new BusinessException("OnlyAvailableCarsCanBeRented");
         }
     }
 }
