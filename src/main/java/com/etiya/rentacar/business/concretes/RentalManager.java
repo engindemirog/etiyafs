@@ -1,7 +1,9 @@
 package com.etiya.rentacar.business.concretes;
 
+import com.etiya.rentacar.business.abstracts.PaymentService;
 import com.etiya.rentacar.business.abstracts.RentalService;
 import com.etiya.rentacar.business.dtos.requests.cars.CreateCarRequest;
+import com.etiya.rentacar.business.dtos.requests.payments.CreatePaymentRequest;
 import com.etiya.rentacar.business.dtos.requests.rentals.CreateRentalRequest;
 import com.etiya.rentacar.business.dtos.responses.cars.CreatedCarResponse;
 import com.etiya.rentacar.business.dtos.responses.rentals.CreatedRentalResponse;
@@ -12,6 +14,7 @@ import com.etiya.rentacar.dataaccess.abstracts.CarRepository;
 import com.etiya.rentacar.dataaccess.abstracts.RentalRepository;
 import com.etiya.rentacar.entities.concretes.Car;
 import com.etiya.rentacar.entities.concretes.Rental;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,14 +28,22 @@ public class RentalManager implements RentalService {
     CarRepository carRepository;
     ModelMapperService modelMapperService;
     RentalBusinessRules rentalBusinessRules;
+    PaymentService paymentService;
 
     @Override
+    @Transactional
     public CreatedRentalResponse add(CreateRentalRequest request) {
 
         rentalBusinessRules.OnlyAvailableCarsCanBeRented(request.getCarId());
+
         Rental rental = modelMapperService.forRequest().map(request, Rental.class);
 
         Rental createdRental =  rentalRepository.save(rental);
+
+        CreatePaymentRequest createPaymentRequest = modelMapperService.forResponse().map(request, CreatePaymentRequest.class);
+        createPaymentRequest.setRentalId(createdRental.getId());
+        createPaymentRequest.setAmount(request.getTotalPrice());
+        paymentService.add(createPaymentRequest);
 
         Optional<Car> car = carRepository.findById(request.getCarId());
         car.get().setState(3);
