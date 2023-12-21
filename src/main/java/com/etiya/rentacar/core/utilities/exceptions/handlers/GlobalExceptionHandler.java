@@ -1,8 +1,8 @@
-package com.etiya.rentacar.core.utilities.exceptions;
+package com.etiya.rentacar.core.utilities.exceptions.handlers;
 
 import com.etiya.rentacar.core.utilities.exceptions.types.BusinessException;
-import com.etiya.rentacar.core.utilities.exceptions.types.BusinessProblemDetails;
-import com.etiya.rentacar.core.utilities.exceptions.types.ValidationProblemDetails;
+import com.etiya.rentacar.core.utilities.exceptions.problemDetails.BusinessProblemDetails;
+import com.etiya.rentacar.core.utilities.exceptions.problemDetails.ValidationProblemDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice

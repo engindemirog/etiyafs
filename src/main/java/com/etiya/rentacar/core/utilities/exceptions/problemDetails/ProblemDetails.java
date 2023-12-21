@@ -1,4 +1,4 @@
-package com.etiya.rentacar.core.utilities.exceptions.types;
+package com.etiya.rentacar.core.utilities.exceptions.problemDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
